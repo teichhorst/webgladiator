@@ -1,15 +1,19 @@
 Welcome to web gladiator
 
 
-<%= form_tag(fights_path, :action => 'create') do %>
+<%= form_tag(fights_path) do %>
 
 Opponent 1:
 
-<%= text_field_tag(:opponent_1) %>
+<%= text_field_tag(:opponent_1, value = 'Website Aaddress') %>
+    <%= text_field_tag(:opponent_1_name, value = 'Website Name') %>
 
 Opponent 2:
 
-<%= text_field_tag(:opponent_2) %>
+<%= text_field_tag(:opponent_2, value = 'Website Address') %>
+    <%= text_field_tag(:opponent_2_name, value = 'Website Name') %>
+
+    <%= submit_tag(value = 'FIGHT!') %>
 
 <% end %>
 

@@ -1,7 +1,5 @@
 Webgladiator::Application.routes.draw do
 
-
-
   root :to => 'fights#index'
 
   resources :fights
