@@ -6,26 +6,42 @@ class FightsController < ApplicationController
 
   def create
 
-    opponent_1 = {health: 100, address: params[:opponent_1], name: params[:opponent_1_name], attack: 0, defense: 0}
+    op1_name = params[:opponent_1_name]
 
-    opponent_2 = {health: 100, address: params[:opponent_2], name: params[:opponent_2_name], attack: 0, defense: 0}
+    op2_name = params[:opponent_2_name]
+
+    op1_address = params[:opponent_1]
+
+    op2_address = params[:opponent_2]
+
+    op1_health = 100
+
+    op2_health = 100
+
+    op1_attack = 100
+
+    op2_attack = 100
+
+    op1_defense = 100
+
+    op2_defense = 100
 
 
-    while opponent_1[:health] > 0 and opponent_2[:health] > 0
 
-      opponent_1[:health] = opponent_1[:health] - rand(6)
-      puts opponent_1.health
+    while op1_health > 0 and op2_health > 0
 
-      opponent_2[:health] = opponent_2[:health] - rand(6)
-      puts opponent_2[:health]
+      op1_health = op1_health - rand(6)
+      puts op1_health
+
+      op2_health = op2_health - rand(6)
+      puts op2_health
     end
 
-    if opponent_1[:health] > 0
-      puts opponent_1[:name] + 'Wins!'
+    if op1_health > 0
+      @result = op1_name + ' Wins!'
     else
-      puts opponent_2[:name] + 'Wins!'
+      @result = op2_name + ' Wins!'
     end
-
 
   end
 
