@@ -5,16 +5,18 @@ class FightsController < ApplicationController
   require 'nokogiri'
   require 'open-uri'
 
-  url = "http://www.gbinternetsolutions.com/"
+  url = 'http://www.gbinternetsolutions.com/'
   doc = Nokogiri::HTML(open(url))
   @urlVar =  doc.text
 
-  url2 = "http://www.gasbuddy.com/"
+  url2 = 'http://www.gasbuddy.com/'
   doc2 = Nokogiri::HTML(open(url2))
   @urlVar2 = doc2.text
 
-  @webName = doc.at_css("title").text
-  @webName2 = doc2.at_css("title").text
+  @webName = doc.at_css('title').text.strip
+  @webName2 = doc2.at_css('title').text.strip
+
+  #@test1 = doc.at_css('height').text
 
   end
 
