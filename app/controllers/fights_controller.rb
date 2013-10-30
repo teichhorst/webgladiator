@@ -7,7 +7,8 @@ class FightsController < ApplicationController
 
   url = "http://www.gasbuddy.com/"
   doc = Nokogiri::HTML(open(url))
-  @urlVar =  doc.at_css("title").text
+  @urlVar =  doc.text
+
 
   end
 
