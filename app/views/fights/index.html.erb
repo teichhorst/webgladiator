@@ -5,17 +5,21 @@ Welcome to web gladiator
 
 Opponent 1:
 
-<%= text_field_tag(:opponent_1, value = 'Website Aaddress') %>
-    <%= text_field_tag(:opponent_1_name, value = 'Website Name') %>
+<%= text_field_tag(:opponent_1, value = 'Website Address') %>
+    <%= text_field_tag(:opponent_1_name, value = @webName) %>
 
 Opponent 2:
 
 <%= text_field_tag(:opponent_2, value = 'Website Address') %>
-    <%= text_field_tag(:opponent_2_name, value = 'Website Name') %>
+    <%= text_field_tag(:opponent_2_name, value = @webName2) %>
 
     <%= submit_tag(value = 'FIGHT!') %>
 
     <br><br><br><br><br><br>
+
+    <p><%= @urlVar %></p>
+
+    <br><br>
 
     <p><%= @urlVar %></p>
 

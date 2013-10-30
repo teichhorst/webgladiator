@@ -9,6 +9,12 @@ class FightsController < ApplicationController
   doc = Nokogiri::HTML(open(url))
   @urlVar =  doc.text
 
+  url2 = "http://www.gasbuddy.com/"
+  doc2 = Nokogiri::HTML(open(url2))
+  @urlVar2 = doc2.text
+
+  @webName = doc.at_css("title").text
+  @webName2 = doc2.at_css("title").text
 
   end
 
@@ -18,9 +24,9 @@ class FightsController < ApplicationController
 
     op2_name = params[:opponent_2_name]
 
-    op1_address = params[:opponent_1]
+    op1_address = @urlVar
 
-    op2_address = params[:opponent_2]
+    op2_address = @urlVar2
 
     op1_health = 100
 
