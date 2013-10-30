@@ -1,8 +1,13 @@
 class FightsController < ApplicationController
 
+  def index
+
   require 'nokogiri'
   require 'open-uri'
-  def index
+
+  url = "http://www.gasbuddy.com/"
+  doc = Nokogiri::HTML(open(url))
+  @urlVar =  doc.at_css("title").text
 
   end
 
