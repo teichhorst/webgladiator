@@ -5,7 +5,7 @@ class FightsController < ApplicationController
   require 'nokogiri'
   require 'open-uri'
 
-  url = "http://www.gasbuddy.com/"
+  url = "http://www.gbinternetsolutions.com/"
   doc = Nokogiri::HTML(open(url))
   @urlVar =  doc.text
 
