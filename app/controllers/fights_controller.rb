@@ -42,15 +42,16 @@ class FightsController < ApplicationController
 
     op2_defense = 100
 
-
+    moves = {'0' => 'Fight starts' }
 
     while op1_health > 0 and op2_health > 0
 
       op1_health = op1_health - rand(6)
-      puts op1_health
 
       op2_health = op2_health - rand(6)
-      puts op2_health
+
+      moves[(moves.count + 1)] = 'move'
+
     end
 
     if op1_health > 0
@@ -58,6 +59,8 @@ class FightsController < ApplicationController
     else
       @result = op2_name + ' Wins!'
     end
+
+    @moves = moves
 
   end
 
