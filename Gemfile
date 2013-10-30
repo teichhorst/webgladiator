@@ -38,3 +38,5 @@ gem 'therubyracer', :platforms => :ruby
 
 # To use debugger
 # gem 'debugger'
+
+gem 'nokogiri'
