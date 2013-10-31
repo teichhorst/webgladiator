@@ -26,9 +26,9 @@ class FightsController < ApplicationController
 
     op2_name = params[:opponent_2_name]
 
-    op1_address = @urlVar
+    op1_address = params[:opponent_1]
 
-    op2_address = @urlVar2
+    op2_address = params[:opponent_2]
 
     op1_health = 100
 
@@ -42,7 +42,7 @@ class FightsController < ApplicationController
 
     op2_defense = 100
 
-    moves = {'0' => 'Fight starts' }
+    @moves = {:move => 'Fight has started!'}
 
     while op1_health > 0 and op2_health > 0
 
@@ -50,9 +50,10 @@ class FightsController < ApplicationController
 
       op2_health = op2_health - rand(6)
 
-      moves[(moves.count + 1)] = 'move'
+      @moves[:move] << (op1_name.to_s + ' has ' + op1_health.to_s + ' health left.  ' + op2_name.to_s + ' has ' + op2_health.to_s + ' health left.')
 
     end
+
 
     if op1_health > 0
       @result = op1_name + ' Wins!'
@@ -60,7 +61,7 @@ class FightsController < ApplicationController
       @result = op2_name + ' Wins!'
     end
 
-    @moves = moves
+
 
   end
 

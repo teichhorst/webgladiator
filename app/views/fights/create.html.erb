@@ -9,4 +9,9 @@
 
 <%= @result %>
 
-<%= @moves %>
+<%= @moves.each do %>
+<br>
+<%= params[:move] %>
+
+<% end %>
+
