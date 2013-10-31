@@ -42,7 +42,9 @@ class FightsController < ApplicationController
 
     op2_defense = 100
 
-    @moves = {:move => 'Fight has started!'}
+    @moves = Array.new
+
+    @moves.push('Fight has Started!')
 
     while op1_health > 0 and op2_health > 0
 
@@ -50,7 +52,7 @@ class FightsController < ApplicationController
 
       op2_health = op2_health - rand(6)
 
-      @moves[:move] << (op1_name.to_s + ' has ' + op1_health.to_s + ' health left.  ' + op2_name.to_s + ' has ' + op2_health.to_s + ' health left.')
+      @moves << (op1_name.to_s + ' has ' + op1_health.to_s + ' health left.  ' + op2_name.to_s + ' has ' + op2_health.to_s + ' health left.')
 
     end
 
