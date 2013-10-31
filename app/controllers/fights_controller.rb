@@ -2,19 +2,7 @@ class FightsController < ApplicationController
 
   def index
 
-  require 'nokogiri'
-  require 'open-uri'
 
-  url = 'http://www.gbinternetsolutions.com/'
-  doc = Nokogiri::HTML(open(url))
-  @urlVar =  doc.text
-
-  url2 = 'http://www.gasbuddy.com/'
-  doc2 = Nokogiri::HTML(open(url2))
-  @urlVar2 = doc2.text
-
-  @webName = doc.at_css('title').text.strip
-  @webName2 = doc2.at_css('title').text.strip
 
   #@test1 = doc.at_css('height').text
 
@@ -63,7 +51,19 @@ class FightsController < ApplicationController
       @result = op2_name + ' Wins!'
     end
 
+    require 'nokogiri'
+    require 'open-uri'
 
+    url = params[:opponent_1]
+    doc = Nokogiri::HTML(open(url.to_s))
+    @urlVar =  doc.text
+
+    url2 = params[:opponent_2]
+    doc2 = Nokogiri::HTML(open(url2.to_s))
+    @urlVar2 = doc2.text
+
+    @webName = doc.at_css('title').text.strip
+    @webName2 = doc2.at_css('title').text.strip
 
   end
 
