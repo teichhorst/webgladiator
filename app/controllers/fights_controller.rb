@@ -10,38 +10,58 @@ class FightsController < ApplicationController
 
   def create
 
-    op1_name = params[:opponent_1_name]
+    require 'nokogiri'
+    require 'open-uri'
 
+    op1_name = params[:opponent_1_name]
     op2_name = params[:opponent_2_name]
 
-    op1_address = params[:opponent_1]
+    doc = Nokogiri::HTML(open(params[:opponent_1]))
+    op1_health = doc.search('div').size + 100
+    op1_dodge = doc.search('p').size
+    op1_speed = 100.to_i
 
-    op2_address = params[:opponent_2]
+    doc2 = Nokogiri::HTML(open(params[:opponent_2]))
+    op2_health = doc2.search('div').size + 100
+    op2_dodge = doc2.search('p').size
+    op2_speed = 100.to_i
 
-    op1_health = 100
+=begin
+    url_1 = params[:opponent_1]
+    doc = Nokogiri::HTML(open(url_1.to_s))
+    @urlVar =  doc.text
+    @url_1_div = doc.html('div.r').count
 
-    op2_health = 100
+    url_2 = params[:opponent_2]
+    doc2 = Nokogiri::HTML(open(url_2.to_s))
+    @urlVar2 = doc2.text
+    @url_2_div = doc2.html('div.r').count
 
-    op1_attack = 100
-
-    op2_attack = 100
-
-    op1_defense = 100
-
-    op2_defense = 100
+    @webName = doc.at_css('title').text.strip
+    @webName2 = doc2.at_css('title').text.strip
+=end
 
     @moves = Array.new
 
-    @moves.push('Fight has Started!')
+    @moves << ('Fight has Started!')
 
     while op1_health > 0 and op2_health > 0
+      op1_speed = op1_speed + rand(50)
+      op2_speed = op2_speed + rand(50)
 
-      op1_health = op1_health - rand(6)
+      if op1_speed > op2_speed
+        op2_health = op2_health - rand(20)
+        @moves << (op2_name.to_s + ' takes a beating from ' + op1_name.to_s + ' and now has ' + op2_health.to_s + '.')
+      end
 
-      op2_health = op2_health - rand(6)
+      if op2_speed > op1_speed
+        op1_health = op1_health - rand(20)
+        @moves << (op1_name.to_s + ' takes a beating from ' + op2_name.to_s + ' and now has ' + op1_health.to_s + '.')
+      end
 
-      @moves << (op1_name.to_s + ' has ' + op1_health.to_s + ' health left.  ' + op2_name.to_s + ' has ' + op2_health.to_s + ' health left.')
-
+      if op1_speed == op2_speed
+        @moves << ('Everyone is confused and nothing happens.')
+      end
     end
 
 
@@ -51,27 +71,7 @@ class FightsController < ApplicationController
       @result = op2_name + ' Wins!'
     end
 
-    require 'nokogiri'
-    require 'open-uri'
 
-    url = params[:opponent_1]
-    doc = Nokogiri::HTML(open(url.to_s))
-    @urlVar =  doc.text
-
-    url2 = params[:opponent_2]
-    doc2 = Nokogiri::HTML(open(url2.to_s))
-    @urlVar2 = doc2.text
-
-    @webName = doc.at_css('title').text.strip
-    @webName2 = doc2.at_css('title').text.strip
-
-  end
-
-  def match
-
-  end
-
-  def show
 
   end
 
