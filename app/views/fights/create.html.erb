@@ -1,6 +1,67 @@
+<%= @op1name %> VS <%= @op2name %><br><br>
+
+<table>
+  <tr>
+    <td>
+
+    </td>
+    <td>
+      <%= @op1name %>
+    </td>
+    <td>
+      <%= @op2name %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Health
+    </td>
+    <td>
+      <%= @op1health %>
+    </td>
+    <td>
+      <%= @op2health %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Dodge
+    </td>
+    <td>
+      <%= @op1dodge %>
+    </td>
+    <td>
+      <%= @op2dodge %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Speed
+    </td>
+    <td>
+      <%= @op1speed %>
+    </td>
+    <td>
+      <%= @op2speed %>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Damage
+    </td>
+    <td>
+      <%= @op1damage %>
+    </td>
+    <td>
+      <%= @op2damage %>
+    </td>
+  </tr>
+</table>
+<br>
+
 <% @moves.each do |m| %>
 
-<%= m %>
+    <%= m %>
     <br>
 <% end %>
 
