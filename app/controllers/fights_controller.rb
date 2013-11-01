@@ -2,10 +2,6 @@ class FightsController < ApplicationController
 
   def index
 
-
-
-  #@test1 = doc.at_css('height').text
-
   end
 
   def create
@@ -61,6 +57,16 @@ class FightsController < ApplicationController
       if url1_speed == url2_speed
         @moves << ('Everyone is confused and nothing happens.')
       end
+
+      if op1_health < 0
+        op1_health = 0
+      end
+
+      if op2_health < 0
+        op2_health = 0
+
+      end
+
     end
 
 
@@ -69,8 +75,6 @@ class FightsController < ApplicationController
     else
       @result = op2_name + ' Wins!'
     end
-
-
 
   end
 
