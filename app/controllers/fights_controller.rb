@@ -38,7 +38,8 @@ class FightsController < ApplicationController
 
     @moves = Array.new
 
-    @string_array = [ ' gets punched in the dick by ', ' takes a horrible bitch slap from ', ' takes a beating from ', "'s balls are aggressively tugged by " ]
+    @string_array = [ ' gets punched in the dick by ', ' takes a horrible bitch slap from ', ' takes a beating from ', "'s balls are aggressively tugged by ", ' took an arrow to the
+      knee shot  by ' ]
 
     @moves << ('Fight has Started!')
 
@@ -54,7 +55,7 @@ class FightsController < ApplicationController
           @result = op1_name + ' Wins!'
         end
 
-        @moves << (op2_name.to_s +  @string_array[rand(4)] + op1_name.to_s + ' and now has ' + op2_health.to_s + '.')
+        @moves << (op2_name.to_s +  @string_array[rand(5)] + op1_name.to_s + ' and now has ' + op2_health.to_s + '.')
       end
 
       if url2_speed > url1_speed
@@ -65,7 +66,7 @@ class FightsController < ApplicationController
           @result = op2_name + ' Wins!'
         end
 
-        @moves << (op1_name.to_s + @string_array[rand(4)] + op2_name.to_s + ' and now has ' + op1_health.to_s + '.')
+        @moves << (op1_name.to_s + @string_array[rand(5)] + op2_name.to_s + ' and now has ' + op1_health.to_s + '.')
       end
 
       if url1_speed == url2_speed
