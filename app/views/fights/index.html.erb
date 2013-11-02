@@ -1,14 +1,20 @@
-Welcome to web gladiator
+<h1>Welcome to Web Gladiator</h1>
 
 
 <%= form_tag(fights_path) do %>
 
-Opponent 1:
+<div>Opponent 1:</div>
 
 <%= text_field_tag(:opponent_1, value = 'Website Address') %>
     <%= text_field_tag(:opponent_1_name, value = 'Website Name') %>
 
-Opponent 2:
+     <br>
+
+    <div>VS.</div>
+
+    <br>
+
+<div>Opponent 2:</div>
 
 <%= text_field_tag(:opponent_2, value = 'Website Address') %>
     <%= text_field_tag(:opponent_2_name, value = 'Website Name') %>

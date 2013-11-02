@@ -44,15 +44,12 @@ class FightsController < ApplicationController
       url1_speed = rand(50) + rand(op1_speed)
       url2_speed = rand(50) + rand(op2_speed)
 
-
-
-
-
       if url1_speed > url2_speed
         op2_health = op2_health - (rand(10) + rand(op1_damage))
 
         if op2_health < 0
           op2_health = 0
+          @result = op1_name + ' Wins!'
         end
 
         @moves << (op2_name.to_s + ' takes a beating from ' + op1_name.to_s + ' and now has ' + op2_health.to_s + '.')
@@ -63,24 +60,16 @@ class FightsController < ApplicationController
 
         if op1_health < 0
           op1_health = 0
+          @result = op2_name + ' Wins!'
         end
 
         @moves << (op1_name.to_s + ' takes a beating from ' + op2_name.to_s + ' and now has ' + op1_health.to_s + '.')
       end
 
       if url1_speed == url2_speed
-        @moves << ('Everyone is confused and nothing happens.')
+        @moves << ('Everyone is out of breath, they take a second to gather themselves.')
       end
 
-
-
-    end
-
-
-    if op1_health > 0
-      @result = op1_name + ' Wins!'
-    else
-      @result = op2_name + ' Wins!'
     end
 
   end
