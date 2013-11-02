@@ -4,6 +4,16 @@ class FightsController < ApplicationController
 
   end
 
+  #def my_function(op1_name, op2_health)
+    #if op2_health < 0
+      #op2_health = 0
+      #op1_name + ' Wins!'
+    #elsif  op1_health < 0
+      #op1_health = 0
+      #op2_name + ' Wins'
+    #end
+ #end
+
   def create
 
     require 'nokogiri'
@@ -18,6 +28,7 @@ class FightsController < ApplicationController
     op1_speed = 100 + doc.search('p').size - (doc.search('img').size * 3)
     op1_damage = doc.search('img').size + 5
     op1_item = doc.search('table').size
+    op1_item_damage = doc.search('td').size + 5
 
     doc2 = Nokogiri::HTML(open(params[:opponent_2]))
     op2_health = 100 + doc2.search('div').size
@@ -25,6 +36,7 @@ class FightsController < ApplicationController
     op2_speed = 100 + doc2.search('p').size - (doc2.search('img').size * 3)
     op2_damage = doc2.search('img').size + 5
     op2_item = doc2.search('table').size
+    op2_item_damage = doc2.search('td').size + 5
 
     @op1name = op1_name
     @op1health = op1_health
@@ -32,6 +44,7 @@ class FightsController < ApplicationController
     @op1speed = op1_speed
     @op1damage = op1_damage
     @op1item = op1_item
+    @op1_item_damage = op1_item_damage
 
     @op2name = op2_name
     @op2health = op2_health
@@ -39,6 +52,7 @@ class FightsController < ApplicationController
     @op2speed = op2_speed
     @op2damage = op2_damage
     @op2item = op2_item
+    @op2_item_damage = op2_item_damage
 
     @moves = Array.new
 
@@ -47,16 +61,23 @@ class FightsController < ApplicationController
 
     @moves << ('Fight has Started!')
 
+
+
     while op1_health > 0 and op2_health > 0
       url1_speed = rand(50) + rand(op1_speed)
       url2_speed = rand(50) + rand(op2_speed)
 
+
       if url1_speed > url2_speed
         op2_health = op2_health - (rand(10) + rand(op1_damage))
+
 
         if op2_health < 0
           op2_health = 0
           @result = op1_name + ' Wins!'
+        elsif  op1_health < 0
+          op1_health = 0
+          @result = op2_name + ' Wins'
         end
 
         @moves << (op2_name.to_s +  @string_array[rand(6)] + op1_name.to_s + ' and now has ' + op2_health.to_s + '.')
@@ -74,9 +95,31 @@ class FightsController < ApplicationController
       end
 
       if op2_item > 0
-        op1_health = op1_health - 5
+        op1_health = op1_health - op2_item_damage
+
+        if op2_health < 0
+          op2_health = 0
+          @result = op1_name + ' Wins!'
+        elsif  op1_health < 0
+          op1_health = 0
+          @result = op2_name + ' Wins'
+        end
+
         @moves << (op2_name.to_s + ' uses an item on ' + op1_name.to_s + '.  ' + op1_name.to_s + ' now has ' + op1_health.to_s + ' health.')
         op2_item = op2_item - 1
+
+      elsif op1_item > 0
+
+        if op2_health < 0
+          op2_health = 0
+          @result = op1_name + ' Wins!'
+        elsif  op1_health < 0
+          op1_health = 0
+          @result = op2_name + ' Wins'
+        end
+
+        @moves << (op1_name.to_s + ' uses an item on ' + op2_name.to_s + '.  ' + op2_name.to_s + ' now has ' + op2_health.to_s + ' health.')
+        op2_item = op1_item - 1
       end
 
       if url1_speed == url2_speed
