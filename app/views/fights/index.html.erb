@@ -1,25 +1,27 @@
-<h1>Welcome to Web Gladiator</h1>
+<div class='main_title'>Web Gladiator</div>
 
 
 <%= form_tag(fights_path) do %>
 
-<div>Opponent 1:</div>
+    <div class='opponent_container'>
+      <div class='opponent_name'>Opponent 1:</div>
 
-<div class="textField"><%= text_field_tag(:opponent_1, value = 'Website Address') %>
-    <%= text_field_tag(:opponent_1_name, value = 'Website Name') %></div>
+      <%= text_field_tag(:opponent_1, value = 'Website Address', :class => 'text_field') %>
+      <%= text_field_tag(:opponent_1_name, value = 'Website Name', :class => 'text_field') %></div>
+    </div>
 
-    <div>VS.</div>
+    <div class='vs'>VS.</div>
 
-    <br>
+    <div class='opponent_container'>
+      <div class='opponent_name'>Opponent 2:</div>
 
-<div>Opponent 2:</div>
+      <%= text_field_tag(:opponent_2, value = 'Website Address', :class => 'text_field') %>
+      <%= text_field_tag(:opponent_2_name, value = 'Website Name', :class => 'text_field') %></div>
+    </div>
 
-<div class="textField"><%= text_field_tag(:opponent_2, value = 'Website Address') %>
-    <%= text_field_tag(:opponent_2_name, value = 'Website Name') %></div>
-
-    <%= submit_tag(value = 'FIGHT!') %>
-
-    <br><br><br><br><br><br>
+    <div class='submit_btn'>
+    <%= submit_tag(value = 'FIGHT!', :class => 'general_btn') %>
+    </div>
 
 
 <% end %>

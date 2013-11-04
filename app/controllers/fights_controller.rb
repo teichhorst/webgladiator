@@ -26,7 +26,7 @@ class FightsController < ApplicationController
     doc = Nokogiri::HTML(open(params[:opponent_1]))
     op1_health = 100 + doc.search('div').size
     op1_dodge = doc.search('p').size
-    op1_speed = 100 + doc.search('p').size - (doc.search('img').size * 3)
+    op1_speed = 25 + doc.search('p').size - (doc.search('img').size * 3)
     if op1_speed < 0 # protection against negative speed
       op1_speed = 1
     end
@@ -37,7 +37,7 @@ class FightsController < ApplicationController
     doc2 = Nokogiri::HTML(open(params[:opponent_2]))
     op2_health = 100 + doc2.search('div').size
     op2_dodge = doc2.search('p').size
-    op2_speed = 100 + doc2.search('p').size - (doc2.search('img').size * 3)
+    op2_speed = 25 + doc2.search('p').size - (doc2.search('img').size * 3)
     if op2_speed < 0 # protection against negative speed
       op2_speed = 1
     end
