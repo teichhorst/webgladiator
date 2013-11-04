@@ -4,6 +4,7 @@ class FightsController < ApplicationController
 
   end
 
+  # function that protects from negative health but I can't implement it
   #def my_function(op1_name, op2_health)
     #if op2_health < 0
       #op2_health = 0
@@ -56,8 +57,8 @@ class FightsController < ApplicationController
 
     @moves = Array.new
 
-    @string_array = [ ' gets punched in the dick by ', ' takes a horrible bitch slap from ', ' takes a beating from ', "'s balls are aggressively tugged by ", ' took an arrow to the
-      knee shot  by ', ' gets called a racial slur by ' ]
+    @fight_strings = [ ' gets punched in the dick by ', ' takes a horrible bitch slap from ', ' takes a beating from ', "'s balls are aggressively tugged by ", ' took an arrow to the
+      knee shot  by ', ' gets called a racial slur by ', ' is karate chopped in the spine by ' ]
 
     @moves << ('Fight has Started!')
 
@@ -72,7 +73,7 @@ class FightsController < ApplicationController
         op2_health = op2_health - (rand(10) + rand(op1_damage))
 
 
-        if op2_health < 0
+        if op2_health < 0 # protection from negative health
           op2_health = 0
           @result = op1_name + ' Wins!'
         elsif  op1_health < 0
@@ -80,7 +81,8 @@ class FightsController < ApplicationController
           @result = op2_name + ' Wins'
         end
 
-        @moves << (op2_name.to_s +  @string_array[rand(6)] + op1_name.to_s + ' and now has ' + op2_health.to_s + '.')
+        @moves << (op2_name.to_s +  @fight_strings[rand(7)] + op1_name.to_s + ' and now has ' + op2_health.to_s + '.')
+        #the "rand()" must be the same as the number of strings in the array
       end
 
       if url2_speed > url1_speed
@@ -91,13 +93,14 @@ class FightsController < ApplicationController
           @result = op2_name + ' Wins!'
         end
 
-        @moves << (op1_name.to_s + @string_array[rand(6)] + op2_name.to_s + ' and now has ' + op1_health.to_s + '.')
+        @moves << (op1_name.to_s + @fight_strings[rand(7)] + op2_name.to_s + ' and now has ' + op1_health.to_s + '.')
+        #the "rand()" must be the same as the number of strings in the array
       end
 
       if op2_item > 0
         op1_health = op1_health - op2_item_damage
 
-        if op2_health < 0
+        if op2_health < 0 # protection from negative health
           op2_health = 0
           @result = op1_name + ' Wins!'
         elsif  op1_health < 0
@@ -110,7 +113,7 @@ class FightsController < ApplicationController
 
       elsif op1_item > 0
 
-        if op2_health < 0
+        if op2_health < 0 # protection from negative health
           op2_health = 0
           @result = op1_name + ' Wins!'
         elsif  op1_health < 0
