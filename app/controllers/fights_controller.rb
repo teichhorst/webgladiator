@@ -5,7 +5,7 @@ class FightsController < ApplicationController
   end
 
   # function that protects from negative health but I can't implement it
-  #def my_function(op1_name, op2_health)
+  #def negativeHealth(op1_name, op2_health)
     #if op2_health < 0
       #op2_health = 0
       #op1_name + ' Wins!'
@@ -24,6 +24,7 @@ class FightsController < ApplicationController
     op2_name = params[:opponent_2_name]
 
     doc = Nokogiri::HTML(open(params[:opponent_1]))
+    url1_name = doc.search('title').size
     op1_health = 100 + doc.search('div').size
     op1_dodge = doc.search('p').size
     op1_speed = 25 + doc.search('p').size - (doc.search('img').size * 3)
@@ -37,7 +38,7 @@ class FightsController < ApplicationController
     doc2 = Nokogiri::HTML(open(params[:opponent_2]))
     op2_health = 100 + doc2.search('div').size
     op2_dodge = doc2.search('p').size
-    op2_speed = 25 + doc2.search('p').size - (doc2.search('img').size * 3)
+    op2_speed = 25 + doc2.search('p').size - (doc2.search('img').size * 2)
     if op2_speed < 0 # protection against negative speed
       op2_speed = 1
     end
@@ -45,6 +46,7 @@ class FightsController < ApplicationController
     op2_item = doc2.search('table').size
     op2_item_damage = doc2.search('td').size + 5
 
+    @url1name = url1_name
     @op1name = op1_name
     @op1health = op1_health
     @op1dodge = op1_dodge
@@ -79,13 +81,7 @@ class FightsController < ApplicationController
         op2_health = op2_health - (rand(10) + rand(op1_damage))
 
 
-        if op2_health < 0 # protection from negative health
-          op2_health = 0
-          @result = op1_name + ' Wins!'
-        elsif  op1_health < 0
-          op1_health = 0
-          @result = op2_name + ' Wins'
-        end
+
 
         @moves << (op2_name.to_s +  @fight_strings[rand(7)] + op1_name.to_s + ' and now has ' + op2_health.to_s + '.')
         #the "rand()" must be the same as the number of strings in the array
@@ -94,11 +90,6 @@ class FightsController < ApplicationController
       if url2_speed > url1_speed
         op1_health = op1_health - (rand(10) + rand(op2_damage))
 
-        if op1_health < 0
-          op1_health = 0
-          @result = op2_name + ' Wins!'
-        end
-
         @moves << (op1_name.to_s + @fight_strings[rand(7)] + op2_name.to_s + ' and now has ' + op1_health.to_s + '.')
         #the "rand()" must be the same as the number of strings in the array
       end
@@ -106,26 +97,13 @@ class FightsController < ApplicationController
       if op2_item > 0
         op1_health = op1_health - op2_item_damage
 
-        if op2_health < 0 # protection from negative health
-          op2_health = 0
-          @result = op1_name + ' Wins!'
-        elsif  op1_health < 0
-          op1_health = 0
-          @result = op2_name + ' Wins'
-        end
+
 
         @moves << (op2_name.to_s + ' uses an item on ' + op1_name.to_s + '.  ' + op1_name.to_s + ' now has ' + op1_health.to_s + ' health.')
         op2_item = op2_item - 1
 
       elsif op1_item > 0
 
-        if op2_health < 0 # protection from negative health
-          op2_health = 0
-          @result = op1_name + ' Wins!'
-        elsif  op1_health < 0
-          op1_health = 0
-          @result = op2_name + ' Wins'
-        end
 
         @moves << (op1_name.to_s + ' uses an item on ' + op2_name.to_s + '.  ' + op2_name.to_s + ' now has ' + op2_health.to_s + ' health.')
         op2_item = op1_item - 1
