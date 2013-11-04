@@ -27,6 +27,9 @@ class FightsController < ApplicationController
     op1_health = 100 + doc.search('div').size
     op1_dodge = doc.search('p').size
     op1_speed = 100 + doc.search('p').size - (doc.search('img').size * 3)
+    if op1_speed < 0 # protection against negative speed
+      op1_speed = 1
+    end
     op1_damage = doc.search('img').size + 5
     op1_item = doc.search('table').size
     op1_item_damage = doc.search('td').size + 5
@@ -35,6 +38,9 @@ class FightsController < ApplicationController
     op2_health = 100 + doc2.search('div').size
     op2_dodge = doc2.search('p').size
     op2_speed = 100 + doc2.search('p').size - (doc2.search('img').size * 3)
+    if op2_speed < 0 # protection against negative speed
+      op2_speed = 1
+    end
     op2_damage = doc2.search('img').size + 5
     op2_item = doc2.search('table').size
     op2_item_damage = doc2.search('td').size + 5
@@ -63,10 +69,10 @@ class FightsController < ApplicationController
     @moves << ('Fight has Started!')
 
 
-
     while op1_health > 0 and op2_health > 0
       url1_speed = rand(50) + rand(op1_speed)
       url2_speed = rand(50) + rand(op2_speed)
+
 
 
       if url1_speed > url2_speed
