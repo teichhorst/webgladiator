@@ -66,7 +66,7 @@ class FightsController < ApplicationController
     @moves = Array.new
 
     @fight_strings = [ ' gets punched in the dick by ', ' takes a horrible bitch slap from ', ' takes a beating from ', "'s balls are aggressively tugged by ", ' took an arrow to the
-      knee shot  by ', ' gets called a racial slur by ', ' is karate chopped in the spine by ' ]
+      knee shot by ', ' gets called a racial slur by ', ' is karate chopped in the spine by ' ]
 
     @moves << ('Fight has Started!')
 
