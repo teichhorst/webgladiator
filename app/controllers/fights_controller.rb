@@ -5,115 +5,136 @@ class FightsController < ApplicationController
   end
 
   # function that protects from negative health but I can't implement it
-  #def negativeHealth(op1_name, op2_health)
-    #if op2_health < 0
-      #op2_health = 0
-      #op1_name + ' Wins!'
-    #elsif  op1_health < 0
-      #op1_health = 0
-      #op2_name + ' Wins'
-    #end
- #end
+  #def negativeHealth(op1_name, op2['health'])
+  #if op2['health'] < 0
+  #op2['health'] = 0
+  #op1_name + ' Wins!'
+  #elsif  op1['health'] < 0
+  #op1['health'] = 0
+  #op2_name + ' Wins'
+  #end
+  #end
 
   def create
 
     require 'nokogiri'
     require 'open-uri'
 
-    op1_name = params[:opponent_1_name]
-    op2_name = params[:opponent_2_name]
+    op1 = Hash.new
+    op2 = Hash.new
 
     doc = Nokogiri::HTML(open(params[:opponent_1]))
-    url1_name = doc.search('title').size
-    op1_health = 100 + doc.search('div').size
-    op1_dodge = doc.search('p').size
-    op1_speed = 25 + doc.search('p').size - (doc.search('img').size * 3)
-    if op1_speed < 0 # protection against negative speed
-      op1_speed = 1
+    op1['name'] = params[:opponent_1].sub(/^https?\:\/\//, '').sub(/^www./, '')
+    op1['health'] = 100 + doc.search('div').size
+    op1['dodge'] = doc.search('p').size
+    op1['speed'] = 200 - (doc.search('img').size * 2)
+    if op1['speed'] < 1 # protection against negative speed
+      op1['speed'] = 10
     end
-    op1_damage = doc.search('img').size + 5
-    op1_item = doc.search('table').size
-    op1_item_damage = doc.search('td').size + 5
+    op1['strength'] = doc.search('img').size * 5
+    op1['item'] = doc.search('table').size
+    op1['item_damage'] = doc.search('td').size + 5
 
     doc2 = Nokogiri::HTML(open(params[:opponent_2]))
-    op2_health = 100 + doc2.search('div').size
-    op2_dodge = doc2.search('p').size
-    op2_speed = 25 + doc2.search('p').size - (doc2.search('img').size * 2)
-    if op2_speed < 0 # protection against negative speed
-      op2_speed = 1
+    op2['name'] = params[:opponent_2].sub(/^https?\:\/\//, '').sub(/^www./, '')
+    op2['health'] = 100 + doc2.search('div').size
+    op2['dodge'] = doc2.search('p').size
+    op2['speed'] = 200 - (doc2.search('img').size * 2)
+    if op2['speed'] < 10 # protection against negative speed
+      op2['speed'] = 10
     end
-    op2_damage = doc2.search('img').size + 5
-    op2_item = doc2.search('table').size
-    op2_item_damage = doc2.search('td').size + 5
+    op2['strength'] = doc2.search('img').size * 5
+    op2['item'] = doc2.search('table').size
+    op2['item_damage'] = doc2.search('td').size + 5
 
-    @url1name = url1_name
-    @op1name = op1_name
-    @op1health = op1_health
-    @op1dodge = op1_dodge
-    @op1speed = op1_speed
-    @op1damage = op1_damage
-    @op1item = op1_item
-    @op1_item_damage = op1_item_damage
+    @op1_name = op1['name']
+    @op1_health= op1['health']
+    @op1_dodge = op1['dodge']
+    @op1_speed = op1['speed']
+    @op1_strength = op1['strength']
+    @op1_item = op1['item']
+    @op1_item_damage = op1['item_damage']
 
-    @op2name = op2_name
-    @op2health = op2_health
-    @op2dodge = op2_dodge
-    @op2speed = op2_speed
-    @op2damage = op2_damage
-    @op2item = op2_item
-    @op2_item_damage = op2_item_damage
+    @op2_name = op2['name']
+    @op2_health = op2['health']
+    @op2_dodge = op2['dodge']
+    @op2_speed = op2['speed']
+    @op2_strength = op2['strength']
+    @op2_item = op2['item']
+    @op2_item_damage = op2['item_damage']
 
     @moves = Array.new
 
-    @fight_strings = [ ' gets punched in the dick by ', ' takes a horrible bitch slap from ', ' takes a beating from ', "'s balls are aggressively tugged by ", ' took an arrow to the
-      knee shot by ', ' gets called a racial slur by ', ' is karate chopped in the spine by ' ]
+    fight_strings = [' gets punched in the dick by ', ' takes a horrible bitch slap from ', ' takes a beating from ', "'s balls are aggressively tugged by ", ' took an arrow to the
+      knee shot by ', ' gets called a racial slur by ', ' is karate chopped in the spine by ']
+
+    body_parts = [' thigh ', ' chest ', ' foot ', ' left hand ', ' right hand ', ' neck ']
+
+    attack_actions = [' swings for ', ' lunges at ', ' attacks ', ' bites ']
+
+    defend_actions = [' shields themself from ', ' blocks ']
+
+    lost_health = [' bleeds for a loss of ', ' is wounded and loses ']
 
     @moves << ('Fight has Started!')
 
+    while op1['health'] > 0 and op2['health'] > 0
 
-    while op1_health > 0 and op2_health > 0
-      url1_speed = rand(50) + rand(op1_speed)
-      url2_speed = rand(50) + rand(op2_speed)
+      :find_attacker_and_defender
 
+      :attack_roll
 
+      :defend_roll
 
-      if url1_speed > url2_speed
-        op2_health = op2_health - (rand(10) + rand(op1_damage))
+      :damage_done
 
-
-
-
-        @moves << (op2_name.to_s +  @fight_strings[rand(7)] + op1_name.to_s + ' and now has ' + op2_health.to_s + '.')
-        #the "rand()" must be the same as the number of strings in the array
-      end
-
-      if url2_speed > url1_speed
-        op1_health = op1_health - (rand(10) + rand(op2_damage))
-
-        @moves << (op1_name.to_s + @fight_strings[rand(7)] + op2_name.to_s + ' and now has ' + op1_health.to_s + '.')
-        #the "rand()" must be the same as the number of strings in the array
-      end
-
-      if op2_item > 0
-        op1_health = op1_health - op2_item_damage
+    end
 
 
+    def find_attacker_and_defender
 
-        @moves << (op2_name.to_s + ' uses an item on ' + op1_name.to_s + '.  ' + op1_name.to_s + ' now has ' + op1_health.to_s + ' health.')
-        op2_item = op2_item - 1
+      op1['move_speed'] = rand(op1['speed'])
+      op2['move_speed'] = rand(op2['speed'])
 
-      elsif op1_item > 0
-
-
-        @moves << (op1_name.to_s + ' uses an item on ' + op2_name.to_s + '.  ' + op2_name.to_s + ' now has ' + op2_health.to_s + ' health.')
-        op2_item = op1_item - 1
-      end
-
-      if url1_speed == url2_speed
-        @moves << ('Everyone is out of breath, they take a second to gather themselves.')
+      if op1['move_speed'] > op2['move_speed']
+        attacker = op1
+        defender = op2
+      else
+        attacker = op2
+        defender = op1
       end
 
     end
+
+    def attack_roll
+
+      attacker['damage'] = 5 + rand(attacker['strength'])
+
+      @moves << attacker['name'] + attack_actions.sample + defender['name'] + "s" + body_parts.sample + '.'
+
+    end
+
+    def defend_roll
+
+      #defender['block'] = 2 + rand(defender['dodge']) + (rand(defender['strength']) / 2)
+
+      defender['block'] = 0
+
+      @moves << defender['name'] + defend_actions.sample + attacker['name']
+
+    end
+
+    def damage_done
+
+      damage = attacker['damage'] - defender['block']
+
+      defender['health'] = defender['health'] - damage
+
+      @moves << defender['name'] + lost_health.sample + damage + 'health.'
+
+
+    end
+
 
   end
 
