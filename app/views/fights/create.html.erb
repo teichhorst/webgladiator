@@ -1,5 +1,5 @@
 <div class='fight_opponent_1'>
-  <%= @op1_name %>
+  <%= @op1['name'] %>
 
   <table>
     <tr>
@@ -7,7 +7,7 @@
         Health
       </td>
       <td>
-        <%= @op1_health %>
+        <%= @op1['health'] %>
       </td>
     </tr>
     <tr>
@@ -15,7 +15,7 @@
         Dodge
       </td>
       <td>
-        <%= @op1_dodge %>
+        <%= @op1['dodge'] %>
       </td>
     </tr>
     <tr>
@@ -23,7 +23,7 @@
         Speed
       </td>
       <td>
-        <%= @op1_speed %>
+        <%= @op1['speed'] %>
       </td>
     </tr>
     <tr>
@@ -31,7 +31,7 @@
         Strength
       </td>
       <td>
-        <%= @op1_strength %>
+        <%= @op1['strength'] %>
       </td>
     </tr>
   </table>
@@ -43,7 +43,7 @@
   <% @moves.each do |m| %>
 
       <%= m %>
-      <br>
+      <br><br>
   <% end %>
 
 
@@ -52,7 +52,7 @@
 </div>
 
 <div class='fight_opponent_2'>
-  <%= @op2_name %>
+  <%= @op2['name'] %>
 
   <table>
     <tr>
@@ -60,7 +60,7 @@
         Health
       </td>
       <td>
-        <%= @op2_health %>
+        <%= @op2['health'] %>
       </td>
     </tr>
     <tr>
@@ -68,7 +68,7 @@
         Dodge
       </td>
       <td>
-        <%= @op2_dodge %>
+        <%= @op2['dodge'] %>
       </td>
     </tr>
     <tr>
@@ -76,7 +76,7 @@
         Speed
       </td>
       <td>
-        <%= @op2_speed %>
+        <%= @op2['speed'] %>
       </td>
     </tr>
     <tr>
@@ -84,7 +84,7 @@
         Strength
       </td>
       <td>
-        <%= @op2_strength %>
+        <%= @op2['strength'] %>
       </td>
     </tr>
   </table>
