@@ -26,6 +26,7 @@ class FightsController < ApplicationController
     doc = Nokogiri::HTML(open(params[:opponent_1]))
     @op1['name'] = params[:opponent_1].sub(/^https?\:\/\//, '').sub(/^www./, '')
     @op1['health'] = 100 + doc.search('div').size
+    @op1['total_health'] = @op1['health']
     @op1['dodge'] = doc.search('p').size
     @op1['speed'] = 200 - (doc.search('img').size * 2)
     if @op1['speed'] < 1 # protection against negative speed
@@ -41,6 +42,7 @@ class FightsController < ApplicationController
     doc2 = Nokogiri::HTML(open(params[:opponent_2]))
     @op2['name'] = params[:opponent_2].sub(/^https?\:\/\//, '').sub(/^www./, '')
     @op2['health'] = 100 + doc2.search('div').size
+    @op2['total_health'] = @op2['health']
     @op2['dodge'] = doc2.search('p').size
     @op2['speed'] = 200 - (doc2.search('img').size * 2)
     if @op2['speed'] < 10 # protection against negative speed
@@ -53,22 +55,32 @@ class FightsController < ApplicationController
     @op2['item'] = doc2.search('table').size
     @op2['item_damage'] = doc2.search('td').size + 5
 
-    
-
-    @moves = Array.new
 
     @fight_strings = [' gets punched in the dick by ', ' takes a horrible bitch slap from ', ' takes a beating from ', "'s balls are aggressively tugged by ", ' took an arrow to the
       knee shot by ', ' gets called a racial slur by ', ' is karate chopped in the spine by ']
 
-    @body_parts = [' thigh ', ' chest ', ' foot ', ' left hand ', ' right hand ', ' neck ']
+    @body_parts = [' thigh ', ' chest ', ' foot ', ' left hand ', ' right hand ', ' neck ', ' forearm ', ' wrist ', ' left eye ', ' right eye ', ' ankle ']
 
-    @attack_actions = [' swings for ', ' lunges at ', ' attacks ', ' bites ']
+    @attack_actions = [' swings for ', ' lunges at ', ' attacks ', ' bites ', ' punches ', ' kicks ', ' grabs ', ' pokes ', ' pinches ', ' spits on ']
 
-    @defend_actions = [' shields themself from ', ' blocks ']
+    @defend_actions = [' shields themselves from ', ' blocks ', ' laughs at ', ' has a slight chuckle ', ' is confused at the weakness of ']
 
-    @lost_health = [' bleeds for a loss of ', ' is wounded and loses ']
+    @block_health = [' is only hurt for ']
 
-    @moves << ('Fight has Started!')
+    @pain_actions = [' winces in pain ', ' screams loudly ', ' lets out a blood curdling scream ', ' is in shock at the pain ', ' lets the world know they are in pain ']
+
+    @lost_health = [' bleeds for a loss of ', ' is wounded and loses ', ' is injured and loses ', ' is induced in unimaginable pain and loses ']
+
+    @hit_actions = [' connects with a blow ', ' cuts through the skin ', ' bashes the opponent ', ' laughs with insanity ', ' attacks with hatred ']
+
+    @win_actions = [' is the clear winner here.', ' has won the fight gracefully.', ' now knows what victory tastes like ']
+
+    @fight_begin_actions = ['The fight has begun!', 'FIGHT! FIGHT! FIGHT!']
+
+
+    @moves = Array.new
+
+    @moves << @fight_begin_actions.sample
 
     def find_attacker_and_defender
 
@@ -89,30 +101,30 @@ class FightsController < ApplicationController
 
     def attack_roll
 
-      @attacker['damage'] = 5 + rand(@attacker['strength'])
+      @attacker['damage'] = rand(10) + 1 + rand(@attacker['strength'])
 
-      @moves << @attacker['name'] + @attack_actions.sample + @defender['name'] + "s" + @body_parts.sample + '.'
-
-    end
-
-    def defend_roll
-
-      #defender['block'] = 2 + rand(defender['dodge']) + (rand(defender['strength']) / 2)
-
-      @defender['block'] = 0
-
-      @moves << @defender['name'] + @defend_actions.sample + @attacker['name']
+      @moves << @attacker['name'] + @attack_actions.sample + @defender['name'] + "s" + @body_parts.sample
 
     end
 
     def damage_done
 
+      @defender['block'] = 2 + rand(@defender['dodge']) + (rand(@defender['strength']) / 2)
+
       @damage = @attacker['damage'] - @defender['block']
 
-      @defender['health'] = @defender['health'] - @damage
-
-      @moves << @defender['name'] + @lost_health.sample + @damage.to_s + ' health.'
-
+      if @damage < 8
+        @damage = rand(8) + 1
+        @defender['health'] = @defender['health'] - @damage
+        @moves << @defender['name'] + @defend_actions.sample + @attacker['name']
+        @moves << @defender['name'] + @block_health.sample + @damage.to_s + ' health.'
+        @moves << @defender['name'] + ' now has ' + @defender['health'].to_s + ' health left. '
+      else
+        @defender['health'] = @defender['health'] - @damage
+        @moves << @defender['name'] + @pain_actions.sample + ' as ' + @attacker['name'] + @hit_actions.sample
+        @moves << @defender['name'] + @lost_health.sample + @damage.to_s + ' health.'
+        @moves << @defender['name'] + ' now has ' + @defender['health'].to_s + ' health left. '
+      end
 
     end
 
@@ -122,10 +134,14 @@ class FightsController < ApplicationController
 
       attack_roll
 
-      defend_roll
-
       damage_done
 
+    end
+
+    if @op1['health'] > @op2['health']
+      @result = @op1['name'] + ' is the clear winner here! '
+    else
+      @result = @op2['name'] + @win_actions.sample
     end
 
 
